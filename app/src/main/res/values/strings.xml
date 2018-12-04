@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string-array name="bits_array">
+        <item>32</item>
+        <item>64</item>
+    </string-array>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/fondo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"> -->
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/decimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:padding="30dp"
+            android:alpha="0.60"
+            android:color="#FFF"
+            android:textSize="18dp"
+            android:text="Decimal a Hexadecimal\n(Punto fijo)" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/decimal2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="top"
+            android:padding="30dp"
+            android:alpha="0.60"
+            android:color="#FFF"
+            android:textSize="18dp"
+            android:text="Decimal a Hexadecimal\n(Punto Flotante)" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/hexadecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="top"
+            android:padding="30dp"
+            android:alpha="0.60"
+            android:color="#FFF"
+            android:textSize="18dp"
+            android:text="Hexadecimal a Decimal" />
+
+
+
+
+</LinearLayout>
