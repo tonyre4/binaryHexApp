@@ -1,15 +1,17 @@
 package com.example.tonny.myapplication;
 
 import android.graphics.Canvas;
+import android.view.View;
 
 public class GameLoopThread extends Thread {
 	static final double FPS = 0.4;
-    private dectohex_pfix.GameView view;
+    private View view;
     private boolean running = false;
    
-    public GameLoopThread(dectohex_pfix.GameView view) {
+    public GameLoopThread(View view) {
           this.view = view;
     }
+
 
     public void setRunning(boolean run) {
           running = run;

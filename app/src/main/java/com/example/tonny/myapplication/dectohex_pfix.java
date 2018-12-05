@@ -25,14 +25,19 @@ import java.util.List;
 
 public class dectohex_pfix extends Activity {
     //Graficos
-    private SurfaceHolder holder;
-    private GameLoopThread gameLoopThread;
-    private Bitmap bmp;
-
     public class GameView extends SurfaceView {
+        private Bitmap bmp;
+        private SurfaceHolder holder;
+        private GameLoopThread gameLoopThread;
+        private int x = 0;
+        private int xSpeed = 1;
+        private int lap = 0;
+        private int extra = 0;
+
         public GameView(Context context) {
             super(context);
-            gameLoopThread = new GameLoopThread(this);
+            setContentView(SV);
+            gameLoopThread = new GameLoopThread(SV);
             holder = getHolder();
             holder.addCallback(new SurfaceHolder.Callback() {
 
@@ -61,14 +66,13 @@ public class dectohex_pfix extends Activity {
                 }
             });
             bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-        }
 
         @Override
-        protected void onDraw(Canvas canvas) {//DIBUJAR EN PANTALLA
+        public void onDraw(Canvas canvas) {//DIBUJAR EN PANTALLA
 
         }
     }
-
+    }
 
     /////////////////////////////////////////////////////
     //###################################################
@@ -87,6 +91,7 @@ public class dectohex_pfix extends Activity {
     Button nextBtn;
     Button playBtn;
     TextView PasoTXT;
+    GameView SV = (GameView) findViewById(R.id.lienzo);
 
     //Objetos de calculo de animacion
     List<frame> divisiones;
@@ -132,12 +137,6 @@ public class dectohex_pfix extends Activity {
         playBtn     = (Button)      findViewById(R.id.playBtn);
         PasoTXT     = (TextView)    findViewById(R.id.PasoTXT);
 
-        //Seteando graficos
-//        LinearLayout layout = (LinearLayout) findViewById(R.id.lienzo);
-//        View mView = new View(this);
-//        layout.addView(mView, new LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT));
 
        //Seteando listeners de botones
         ClearBtn.setOnClickListener(new Button.OnClickListener() {

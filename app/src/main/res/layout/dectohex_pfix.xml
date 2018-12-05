@@ -166,7 +166,7 @@
             android:text="Paso: "/>
 
 
-        <SurfaceView
+        <view class="com.example.tonny.myapplication.dectohex_pfix$GameView"
             android:id="@+id/lienzo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
