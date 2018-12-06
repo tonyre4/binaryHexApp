@@ -28,6 +28,11 @@
             android:inputType="text"
             android:hint="ej. abc123"/>
 
+        <com.example.tonny.myapplication.InternalView2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/view"/>
+
         <Spinner
             android:layout_width="0dp"
             android:layout_weight="1"

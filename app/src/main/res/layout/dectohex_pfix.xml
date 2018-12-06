@@ -40,6 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:digits="-0123456789."
+                    android:text="10.1"
                     android:hint="Número decimal"
                     android:inputType="number" />
 
@@ -50,6 +51,7 @@
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="N bits p/fracc"
+                    android:text="6"
                     android:inputType="number" />
             </LinearLayout>
 
@@ -109,6 +111,7 @@
             <Button
                 android:id="@+id/ClearBtn"
                 android:layout_weight="1"
+                android:onClick="resetOrClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Borrar" />
@@ -116,6 +119,7 @@
             <Button
                 android:id="@+id/CalcBtn"
                 android:layout_weight="1"
+                android:onClick="calc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Calcular" />
@@ -144,15 +148,18 @@
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="backFrame"
                 android:text="&lt;&lt;"/>
             <Button
                 android:id="@+id/nextBtn"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="nextFrame"
                 android:text="&gt;&gt;"/>
             <Button
                 android:id="@+id/playBtn"
+                android:onClick="playAnimation"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,11 +172,17 @@
             android:layout_height="wrap_content"
             android:text="Paso: "/>
 
-
-        <view class="com.example.tonny.myapplication.dectohex_pfix$GameView"
-            android:id="@+id/lienzo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <com.example.tonny.myapplication.binToHexAnim
+                android:id="@+id/lienzo"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                />
+        </LinearLayout>
+
 
 
     </LinearLayout>

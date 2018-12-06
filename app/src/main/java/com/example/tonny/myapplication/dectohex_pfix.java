@@ -1,82 +1,24 @@
 package com.example.tonny.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class dectohex_pfix extends Activity {
-    //Graficos
-    public class GameView extends SurfaceView {
-        private Bitmap bmp;
-        private SurfaceHolder holder;
-        private GameLoopThread gameLoopThread;
-        private int x = 0;
-        private int xSpeed = 1;
-        private int lap = 0;
-        private int extra = 0;
 
-        public GameView(Context context) {
-            super(context);
-            setContentView(SV);
-            gameLoopThread = new GameLoopThread(SV);
-            holder = getHolder();
-            holder.addCallback(new SurfaceHolder.Callback() {
-
-                @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
-                    boolean retry = true;
-                    gameLoopThread.setRunning(false);
-                    while (retry) {
-                        try {
-                            gameLoopThread.join();
-                            retry = false;
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                }
-
-                @Override
-                public void surfaceCreated(SurfaceHolder holder) {
-                    gameLoopThread.setRunning(true);
-                    gameLoopThread.start();
-                }
-
-                @Override
-                public void surfaceChanged(SurfaceHolder holder, int format,
-                                           int width, int height) {
-                }
-            });
-            bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-
-        @Override
-        public void onDraw(Canvas canvas) {//DIBUJAR EN PANTALLA
-
-        }
-    }
-    }
-
-    /////////////////////////////////////////////////////
-    //###################################################
-    /////////////////////////////////////////////////////
     //Declaracion de Widgets
     EditText nDecimal1;
     EditText nBitsFracc1;
@@ -91,13 +33,23 @@ public class dectohex_pfix extends Activity {
     Button nextBtn;
     Button playBtn;
     TextView PasoTXT;
-    GameView SV = (GameView) findViewById(R.id.lienzo);
+    binToHexAnim SV1;
 
-    //Objetos de calculo de animacion
-    List<frame> divisiones;
+//    EditText nDecimal1   = (EditText)    findViewById(R.id.nDecimal1);
+//    EditText nBitsFracc1 = (EditText)    findViewById(R.id.nBitsFracc1);
+//    RadioGroup rbSignSel   = (RadioGroup)  findViewById(R.id.rbSignSel);
+//    RadioButton rbSigned    = (RadioButton) findViewById(R.id.rbSigned);
+//    RadioButton rbUnsigned  = (RadioButton) findViewById(R.id.rbUnsigned);
+//    TextView Rbinario    = (TextView)    findViewById(R.id.Rbinario);
+//    TextView Rhexa       = (TextView)    findViewById(R.id.Rhexa);
+//    Button ClearBtn    = (Button)      findViewById(R.id.ClearBtn);
+//    Button CalcBtn     = (Button)      findViewById(R.id.CalcBtn);
+//    Button backBtn     = (Button)      findViewById(R.id.backBtn);
+//    Button nextBtn     = (Button)      findViewById(R.id.nextBtn);
+//    Button playBtn     = (Button)      findViewById(R.id.playBtn);
+//    TextView PasoTXT     = (TextView)    findViewById(R.id.PasoTXT);
+//    MySurfaceView SV1      = (MySurfaceView) findViewById(R.id.lienzo);
 
-    List<frame> multiplicaciones;
-    frame Complemento;
 
     //Variables del programa
     float Entrada; //Entrada del edit text
@@ -136,66 +88,106 @@ public class dectohex_pfix extends Activity {
         nextBtn     = (Button)      findViewById(R.id.nextBtn);
         playBtn     = (Button)      findViewById(R.id.playBtn);
         PasoTXT     = (TextView)    findViewById(R.id.PasoTXT);
+        SV1         = (binToHexAnim) findViewById(R.id.lienzo);
 
 
        //Seteando listeners de botones
-        ClearBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                nDecimal1.setText("");
-                nBitsFracc1.setText("");
-                playBtn.setText(">");
-                Rbinario.setText("0.0");
-                Rhexa.setText("0.0");
-                rbSigned.toggle();
-                animando = false;
-            }
-        });
+//        ClearBtn.setOnClickListener(new Button.OnClickListener() { //LISTENER1
+//            public void onClick(View v) {
+//                nDecimal1.setText("");
+//                nBitsFracc1.setText("");
+//                playBtn.setText(">");
+//                Rbinario.setText("0.0");
+//                Rhexa.setText("0.0");
+//                rbSigned.toggle();
+//                animando = false;
+//            }
+//        });
 
-        //Play button
-        playBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                if(!animando) {
-                    playBtn.setText("||");
-                    animando = true;
-                }
-                else {
-                    playBtn.setText(">");
-                    animando = false;
-                }
-            }
-        });
-
-        CalcBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                calcular();
-            }
-        });
+//        playBtn.setOnClickListener(new Button.OnClickListener() { //LISTENER2
+//            public void onClick(Object v) {
+//                if(!animando) {
+//                    playBtn.setText("||");
+//                    animando = true;
+//                }
+//                else {
+//                    playBtn.setText(">");
+//                    animando = false;
+//                }
+//            }
+//        });
+//
+//        CalcBtn.setOnClickListener(new Button.OnClickListener() {
+//            public void onClick(View v) {
+//                calcular();
+//            }
+//        });  //LISTENER3
 
         //para obtener el ancho de la pantalla en pixeles
         Display display = getWindowManager().getDefaultDisplay();
         final Point size = new Point();
         display.getSize(size);
+
+
+
     }
 
-    public void calcular(){
+    public void resetOrClear(View v) {  //LISTENER1
+        nDecimal1.setText("");
+        nBitsFracc1.setText("");
+        playBtn.setText(">");
+        Rbinario.setText("0.0");
+        Rhexa.setText("0.0");
+        rbSigned.toggle();
+        animando = false;
+    }
+
+    public void playAnimation(View v){ //LISTENER2
+        if(!animando) {
+            playBtn.setText("||");
+            animando = true;
+            SV1.setFPS(0.4);
+            SV1.setAnimation(animando);
+        }
+        else {
+            playBtn.setText(">");
+            animando = false;
+            SV1.setFPS(30);
+            SV1.setAnimation(animando);
+        }
+    }
+
+    public void calc(View v){
+        calcular();
+    }
+
+    public void backFrame(){
+        SV1.backFrame();
+    }
+
+    public void nextFrame(){
+        SV1.nextFrame();
+    }
+
+
+    public void calcular(){  //LISTENER3
         if (!validar()) //Validando la entrada
             return;
-
 
         //Construyendo frames de divisiones
         ///////////////////////////////////
         int pE = parteEntera; // Parte entera
         String resultComp = "";
-        divisiones = null;
-        divisiones = new ArrayList<frame>();
+        SV1.clearDiv();
+
         while(true){
             if(pE==0){
-                System.out.println("Tonny: Numero de objetos en la lista: " + divisiones.size());
+                System.out.println("Tonny: Numero de objetos en la lista: " + SV1.getDivSize());
                 System.out.println("Tonny: Numero binario construido: " + resultComp);
                 System.out.println("Tonny: Datos de los objetos: ");
 
-                for(int i=0; i<divisiones.size();i++){
-                    divFrame o = (divFrame) divisiones.get(i);
+                for(int i=0; i<SV1.getDivSize();i++){
+                    divFrame o = (divFrame) SV1.getDivObj(i);
                     System.out.println("Tonny: Objeto  " + i + ": ");
                     System.out.println("\tTonny: Resultado: " + o.Resultado);
                     System.out.println("\tTonny: Dividendo: " + o.divid);
@@ -205,21 +197,19 @@ public class dectohex_pfix extends Activity {
                 break;
             }
             resultComp = (pE%2) + resultComp;
-            divFrame f = new divFrame(resultComp,pE);
-            divisiones.add((frame) f);
+
+            SV1.addDiv(resultComp,pE);
             pE /= 2;
         }
+
         /////////////////////////////////////////
         /////////////////////////////////////////
 
-        //Calculando frames de divisiones
+        //Calculando frames de multiplicaciones
         /////////////////////////////////
-        multiplicaciones = null; //Borrando objeto
-        multiplicaciones = new ArrayList<frame>();
+        SV1.clearMul();
         String resultComppF = "";
-
         float pF = parteFaccionaria;//Parte fraccionaria en memoria
-
         for(int i=0; i<bitsFraccion; i++) {
             float pF2 = pF;
             pF *= 2;
@@ -233,8 +223,7 @@ public class dectohex_pfix extends Activity {
                 pF -= 1.0;
             }
 
-            mulFrame f = new mulFrame(resultComppF, pF2);
-            multiplicaciones.add((frame) f);
+            SV1.addMul(resultComppF,pF2);
         }
         /////////////////////////////////
         /////////////////////////////////
@@ -282,6 +271,11 @@ public class dectohex_pfix extends Activity {
                 Rhexa.setText("0x" + Integer.toHexString(Integer.parseInt("0" + resultComp + resultComppF,2)).toUpperCase());
             }
         }
+
+        //Configuraciones del thread
+        SV1.setFPS(30); //Animacion rapida
+        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString()); //Seteando resultados y entradas
+        SV1.setRdy(); //Activar graficos
     }
 
     //Metodo para validacion y obtención de datos
@@ -351,9 +345,13 @@ public class dectohex_pfix extends Activity {
         return true;
     }
 
-    void printT (String m){
-        System.out.print("Tonny: " + m);
+    @Override
+    protected void onPause () {
+        super.onPause();
+        SV1.StopThread (); // Es para evitar que truene "deteniendo el hilo"
     }
+
+
 }
 
 
