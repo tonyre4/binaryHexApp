@@ -22,11 +22,16 @@ class divFrame extends frame{
 class mulFrame extends  frame{
 
     public float real,doublereal;
+    public int nletras;
 
     public mulFrame(String R, float r){
         Resultado = R;
-        real = r;
+        if (r>=0)
+            real = r;
+        else
+            real *= -1;
         doublereal = real*2;
+        nletras = String.valueOf(Resultado).length();
     }
 
 }

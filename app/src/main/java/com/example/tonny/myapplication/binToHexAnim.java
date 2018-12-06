@@ -147,7 +147,59 @@ public class binToHexAnim extends SurfaceView implements
 		}
 
 
+        //Dibujar frame de multiplicaciones
+        if(foto<=divisiones.size()+multiplicaciones.size()){
+            //Dibujar Constantes
+            int elem = foto-divisiones.size()-1;
+            mulFrame o = (mulFrame) multiplicaciones.get(elem);
+            paint.setTextSize(fontsize/2);
+            paint.setColor(Color.BLACK);
+            canvas.drawText("Cálculo de parte fraccionaria: " , anMarg , rowsize/2 ,paint);
+            canvas.drawText("Paso " + (elem+1)  + ": " , anMarg, rowsize+5, paint);
 
+            //Dibujar resultado
+            String t = "Resultado actual: ";
+            canvas.drawText(t, anMarg, rowsize*6, paint);
+            float uc = paint.measureText("0");
+            float z = paint.measureText(t);
+
+            if (o.Resultado.length()!=1){
+                canvas.drawText( o.Resultado.substring(0,o.nletras-1), anMarg+z, rowsize*6, paint);
+                z +=  paint.measureText(o.Resultado) - uc;
+            }
+
+            paint.setColor(Color.RED);
+            canvas.drawText( "" + o.Resultado.charAt(o.nletras-1), anMarg+z, rowsize*6, paint);
+
+
+            //Dibujando Multiplicación
+            int tempf = fontsize;
+            paint.setTextSize(tempf);
+            paint.setColor(Color.BLACK);
+            z = paint.measureText("" + o.real);
+            canvas.drawText("" + o.real, anMarg, rowsize*3,paint);
+            float z2 = paint.measureText("x 2");
+            canvas.drawText("x 2" , anMarg-z2+z, rowsize*4,paint);
+            canvas.drawLine(anMarg, rowsize*4+20 , anMarg+z,rowsize*4+20, paint);
+            paint.setColor(Color.RED);
+            canvas.drawText("" + String.valueOf(o.doublereal).charAt(0), anMarg, rowsize*5, paint);
+            paint.setColor(Color.BLACK);
+            canvas.drawText("" + String.valueOf(o.doublereal).substring(1,(""+ o.doublereal).length()-1), anMarg+uc+uc, rowsize*5, paint);
+
+            if(String.valueOf(o.doublereal).charAt(0) == '1'){
+                float z4 = paint.measureText("" + o.doublereal);
+                paint.setTextSize(fontsize/2);
+                canvas.drawText("" + String.valueOf("-1 en el siguiente") , anMarg+uc+uc+z4, rowsize*5, paint);
+            }
+
+            if(multiplicaciones.size() == foto-divisiones.size()){
+                paint.setTextSize(tempf/2);
+                paint.setColor(Color.DKGRAY);
+                canvas.drawText("Último Paso", anMarg+z, rowsize*2, paint);
+            }
+
+            return;
+        }
 
 
 	}
@@ -210,6 +262,7 @@ public class binToHexAnim extends SurfaceView implements
 	}
 
 	public void backFrame(){
+	    if(!ready) return;
 		if(foto==0){
 
 		}
@@ -219,8 +272,9 @@ public class binToHexAnim extends SurfaceView implements
 	}
 
 	public void nextFrame(){
-		int totalPasos = getDivSize()+getMulSize()-1;
-		if(foto==totalPasos){
+	    if(!ready) return;
+		//int totalPasos = getDivSize()+getMulSize();
+		if(foto==99){
 
 		}
 		else {
