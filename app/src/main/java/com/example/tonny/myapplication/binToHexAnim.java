@@ -28,6 +28,7 @@ public class binToHexAnim extends SurfaceView implements
 	String bitsFracc;
 	String finalR;
 	String finalRHex;
+	boolean signo;
 
 	private MySurfaceThread thread;
 	private Paint paint;// = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -78,14 +79,73 @@ public class binToHexAnim extends SurfaceView implements
 			canvas.drawText("Entradas: ", anMarg, 1*rowsize,paint);
 			canvas.drawText("Número: " + Decimal,50+anMarg,3*rowsize, paint);
 			canvas.drawText("Bits p/ fraccion: " + bitsFracc,50+anMarg,4*rowsize, paint);
+			if(signo){
+				paint.setColor(Color.RED);
+				canvas.drawText("Negativo",50+anMarg,5*rowsize, paint);
+			}
+			else{
+				paint.setColor(Color.BLUE);
+				canvas.drawText("Positivo",50+anMarg,5*rowsize, paint);
+			}
+			return;
 		}
 
 		//Dibujar frame de divisiones
-
-		if(foto>0 && foto<=divisiones.size()){
+		if(foto<=divisiones.size()){
+			//Dibujar Constantes
 			int elem = foto-1;
+			divFrame o = getDivObj(elem);
+			paint.setTextSize(fontsize/2);
+			paint.setColor(Color.BLACK);
+			canvas.drawText("Calculo de parte entera: " , anMarg , rowsize/2 ,paint);
+			canvas.drawText("Paso " + foto + ": " , anMarg, rowsize+5, paint);
 
+			//Dibujar resultado
+			String t = "Resultado actual: ";
+			canvas.drawText(t, anMarg, rowsize*6, paint);
+			float z = paint.measureText(t);
+			paint.setColor(Color.RED);
+			canvas.drawText( "" + o.Resultado.charAt(0), anMarg+z, rowsize*6, paint);
+
+			if (o.Resultado.length()!=1){
+				z += paint.measureText("" + o.Resultado.charAt(0));
+				paint.setColor(Color.BLACK);
+				canvas.drawText( o.Resultado.substring(1,o.Resultado.length()), anMarg+z, rowsize*6, paint);
+			}
+
+			//Dibujando division
+			int tempf = fontsize;
+			int diag = 60;
+			paint.setTextSize(tempf);
+			paint.setColor(Color.BLACK);
+			z = paint.measureText("2");
+			canvas.drawText("2", anMarg, rowsize*4,paint);
+			canvas.drawLine(anMarg+z,rowsize*4,anMarg+z+diag,rowsize*4-(tempf), paint);
+			float z2 = paint.measureText("2" + o.divid);
+			canvas.drawLine(anMarg+diag+z, rowsize*4-(tempf) , anMarg+20+z+z2,rowsize*4-(tempf), paint);
+			canvas.drawText("" + o.divid, anMarg+diag+z, rowsize*4, paint);
+			canvas.drawText("" + o.cociente, anMarg+z+((int)(diag*1.3)), rowsize*4-(tempf)-40, paint);
+
+			float z3 = z2 + paint.measureText("00");
+			if(o.Resultado.charAt(0) == '1'){
+                paint.setColor(Color.RED);
+			    canvas.drawText("Impar", anMarg+z+z3, rowsize*4, paint);
+            }
+            else{
+                paint.setColor(Color.BLUE);
+                canvas.drawText("Par", anMarg+z+z3, rowsize*4, paint);
+            }
+            canvas.drawText("" + o.Resultado.charAt(0), anMarg+z2, rowsize*5, paint);
+
+			if(foto == divisiones.size()){
+                paint.setTextSize(tempf/2);
+                paint.setColor(Color.DKGRAY);
+                canvas.drawText("Último Paso", anMarg+z+z3, rowsize*2, paint);
+            }
+
+            return;
 		}
+
 
 
 
@@ -137,11 +197,12 @@ public class binToHexAnim extends SurfaceView implements
 		foto = 0;
 	}
 
-	public void setResults(String D, String b, String R, String Rh){
+	public void setResults(String D, String b, String R, String Rh, boolean s){
 		Decimal = D;
 		bitsFracc = b;
 		finalR = R;
 		finalRHex = Rh;
+		signo = s;
 	}
 
 	public void setFPS(double f){

@@ -161,11 +161,11 @@ public class dectohex_pfix extends Activity {
         calcular();
     }
 
-    public void backFrame(){
+    public void backFrame(View v){
         SV1.backFrame();
     }
 
-    public void nextFrame(){
+    public void nextFrame(View v){
         SV1.nextFrame();
     }
 
@@ -274,7 +274,7 @@ public class dectohex_pfix extends Activity {
 
         //Configuraciones del thread
         SV1.setFPS(30); //Animacion rapida
-        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString()); //Seteando resultados y entradas
+        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo); //Seteando resultados y entradas
         SV1.setRdy(); //Activar graficos
     }
 
