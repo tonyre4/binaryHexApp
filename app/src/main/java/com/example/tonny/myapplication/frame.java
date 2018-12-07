@@ -26,10 +26,7 @@ class mulFrame extends  frame{
 
     public mulFrame(String R, float r){
         Resultado = R;
-        if (r>=0)
-            real = r;
-        else
-            real *= -1;
+        real = r;
         doublereal = real*2;
         nletras = String.valueOf(Resultado).length();
     }

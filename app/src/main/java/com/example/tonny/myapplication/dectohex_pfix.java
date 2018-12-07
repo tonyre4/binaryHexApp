@@ -232,6 +232,9 @@ public class dectohex_pfix extends Activity {
         if(rbUnsigned.isChecked()){
             Rbinario.setText(resultComp + "." + resultComppF);
             Rhexa.setText("0x" + Integer.toHexString(Integer.parseInt( resultComp+resultComppF,2)).toUpperCase());
+            SV1.setFPS(30); //Animacion rapida
+            SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, false); //Seteando resultados y entradas
+            SV1.setRdy(); //Activar graficos
         }
         else {
             if (signo) {
@@ -274,7 +277,7 @@ public class dectohex_pfix extends Activity {
 
         //Configuraciones del thread
         SV1.setFPS(30); //Animacion rapida
-        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo); //Seteando resultados y entradas
+        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, true); //Seteando resultados y entradas
         SV1.setRdy(); //Activar graficos
     }
 
@@ -339,6 +342,7 @@ public class dectohex_pfix extends Activity {
         }
 
         parteFaccionaria = Entrada % 1;
+        parteFaccionaria = (parteFaccionaria<0) ? parteFaccionaria*-1 : parteFaccionaria;
         System.out.println("Tonny: Parte fraccionaria " + parteFaccionaria);
 
 

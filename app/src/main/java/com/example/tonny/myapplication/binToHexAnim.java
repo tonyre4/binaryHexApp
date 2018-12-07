@@ -23,12 +23,15 @@ public class binToHexAnim extends SurfaceView implements
 	boolean animate = false;
 	boolean ready = false;
 	final int filas = 6;
+	int totalframes = 0;
+	int missingframes = 0;
 
 	String Decimal;
 	String bitsFracc;
 	String finalR;
 	String finalRHex;
 	boolean signo;
+	boolean consigno;
 
 	private MySurfaceThread thread;
 	private Paint paint;// = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -59,7 +62,14 @@ public class binToHexAnim extends SurfaceView implements
 			return;
 
 		if(animate){ //Si la animacion esta encendida aumentar el frame
-			foto++;
+			//setFPS(0.4);
+            if(missingframes==45){
+                nextFrame();
+                missingframes=0;
+            }
+			else{
+                missingframes++;
+            }
 		}
 
 		int an = getWidth();//OBTENER ANCHO
@@ -201,8 +211,213 @@ public class binToHexAnim extends SurfaceView implements
             return;
         }
 
+        //Calculo de fotogramas siguientes
+        int foto2 = foto - (divisiones.size()+multiplicaciones.size()+1);
+        //System.out.println("Frame de complemento: " + foto2);
+        //Dibujar Resultado
+        String Rdiv = divisiones.get(divisiones.size()-1).Resultado ;
+        String Rmul = multiplicaciones.get(multiplicaciones.size()-1).Resultado;
+
+        if(foto2==0){
+            paint.setTextSize(fontsize/2);
+            paint.setColor(Color.BLACK);
+            canvas.drawText("Resumen: " , anMarg , rowsize/2 ,paint);
+            canvas.drawText("Parte entera: ", anMarg, (rowsize*2), paint);
+            canvas.drawText("Parte fraccion:", anMarg, (rowsize*4), paint);
+            paint.setTextSize(fontsize);
+            paint.setColor(Color.GREEN);
+            canvas.drawText("" + Rdiv , anMarg, (rowsize*3), paint);
+            paint.setColor(Color.YELLOW);
+            canvas.drawText("" + Rmul , anMarg, (rowsize*5), paint);
+            return;
+        }
+
+        String Rcomp = Rdiv + Rmul;
+        //Dibujar complemento
+		if (consigno){
+
+		    //Cuando tiene signo negativo
+		    if (signo) {
+			    /*
+		        1 - Presentar Complemento a 1
+		        2 - Presentar Complemento a 2
+		        */
+                paint.setTextSize(fontsize / 2);
+                paint.setColor(Color.BLACK);
+                String inv = "";
+                String inv2 = "";
+                for (int i = 0; i < Rdiv.length(); i++) {
+                    if (Rdiv.charAt(i) == '0') {
+                        inv += "1";
+                    } else {
+                        inv += "0";
+                    }
+                }
+                for (int i = 0; i < Rmul.length(); i++) {
+                    if (Rmul.charAt(i) == '0') {
+                        inv2 += "1";
+                    } else {
+                        inv2 += "0";
+                    }
+                }
+
+                String invC = inv + inv2;
+                Rcomp = invC;
+                int CA2 = Integer.parseInt(invC, 2);
+                CA2 += 1;
+                String CA2s = Integer.toBinaryString(CA2);
+                for (int i = CA2s.length(); i < invC.length(); i++) {
+                    CA2s = "0" + CA2s;
+                }
+
+                switch (foto2) {
+                    case 1:
+                        canvas.drawText("Complemento a 1:", anMarg, rowsize / 2, paint);
+                        canvas.drawText("Invertido:", anMarg, (int) (rowsize * 2.5), paint);
+                        if (Rcomp.length() > 15) {
+                            paint.setTextSize(fontsize / 2);
+                        } else {
+                            paint.setTextSize(fontsize);
+                        }
+                        paint.setColor(Color.GREEN);
+                        canvas.drawText(Rdiv, anMarg, (int) (rowsize * 1.5), paint);
+                        canvas.drawText(inv, anMarg, (int) (rowsize * 3.5), paint);
+                        float v = paint.measureText(Rdiv);
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawText(Rmul, anMarg + v, (int) (rowsize * 1.5), paint);
+                        canvas.drawText(inv2, anMarg + v, (int) (rowsize * 3.5), paint);
+                        return;
+                    case 2:
+                        canvas.drawText("Complemento a 2:", anMarg, rowsize / 2, paint);
+                        if (Rcomp.length() > 15) {
+                            paint.setTextSize(fontsize / 2);
+                        } else {
+                            paint.setTextSize(fontsize);
+                        }
+
+                        paint.setColor(Color.GREEN);
+                        canvas.drawText(inv, anMarg, (int) (rowsize * 1.5), paint);
+                        v = paint.measureText(inv);
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawText(inv2, anMarg + v, (int) (rowsize * 1.5), paint);
+                        float v2 = paint.measureText(inv + inv2) - paint.measureText("+ 1");
+                        float v3 = paint.measureText(inv + inv2) + paint.measureText("+ 1");
+                        paint.setColor(Color.BLACK);
+                        canvas.drawText("+ 1", anMarg + v2, (int) (rowsize * 2.5), paint);
+                        canvas.drawLine(anMarg, (int) (rowsize * 2.5), anMarg + v3, (int) (rowsize * 2.5), paint);
+                        paint.setColor(Color.GREEN);
+                        canvas.drawText(CA2s.substring(0, inv.length()), anMarg, (int) (rowsize * 3.5), paint);
+                        v = paint.measureText(CA2s.substring(0, inv.length()));
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawText(CA2s.substring(inv.length(), CA2s.length()), anMarg + v, (int) (rowsize * 3.5), paint);
+                        return;
+
+                    default:
+                        foto2 -= 2;
+                        break;
+                }
+
+            }
+
+            switch(foto2){
+                case 1:
+                    paint.setTextSize(fontsize / 2);
+                    canvas.drawText("Agregando signo: ", anMarg, rowsize / 2, paint);
+                    if (Rcomp.length() > 15) {
+                        paint.setTextSize(fontsize / 2);
+                    } else {
+                        paint.setTextSize(fontsize);
+                    }
+                    float v = paint.measureText("0");
+                    if(signo){
+                        paint.setColor(Color.RED);
+                        canvas.drawText("1", anMarg, (int) (rowsize * 2.5), paint);
+                        paint.setTextSize(fontsize);
+                        canvas.drawText("Negativo", anMarg, (int) (rowsize * 4.5), paint);
+                        //Rcomp = "1" + Rcomp;
+                    }
+                    else{
+                        paint.setColor(Color.BLUE);
+                        canvas.drawText("0", anMarg, (int) (rowsize * 2.5), paint);
+                        paint.setTextSize(fontsize);
+                        canvas.drawText("Positivo", anMarg, (int) (rowsize * 4.5), paint);
+                        //Rcomp = "0" + Rcomp;
+                    }
+
+                    if (Rcomp.length() > 15) {
+                        paint.setTextSize(fontsize / 2);
+                    } else {
+                        paint.setTextSize(fontsize);
+                    }
+                    paint.setColor(Color.GREEN);
+                    canvas.drawText(Rcomp.substring(0, Rdiv.length()), anMarg+v, (int) (rowsize * 2.5), paint);
+                    v += paint.measureText(Rcomp.substring(0, Rdiv.length()));
+                    paint.setColor(Color.YELLOW);
+                    canvas.drawText(Rcomp.substring(Rdiv.length(), Rcomp.length()), anMarg + v, (int) (rowsize * 2.5), paint);
+
+                    return;
+                case 2:
+                    paint.setTextSize(fontsize / 2);
+                    canvas.drawText("Conversion a hexadecimal: ", anMarg, rowsize / 2, paint);
+                    canvas.drawText("Cuartetos de bits: ", anMarg, rowsize*2, paint);
+                    canvas.drawText("Número hexadecimal: ", anMarg, rowsize*4, paint);
+                    if(signo){
+                        Rcomp = "1" + Rcomp;
+                    }
+                    else{
+                        Rcomp = "0" + Rcomp;
+                    }
+                    if (Rcomp.length() > 15) {
+                        paint.setTextSize(fontsize / 2);
+                    } else {
+                        paint.setTextSize(fontsize);
+                    }
+
+                    float m = 0;
+                    float m2 = 0;
+                    for(int i=0 ; i<=Rcomp.length()/4;i++){
+                        paint.setColor(getColor(i));
+                        int index = Rcomp.length()-((i+1)*4);
+                        int index2 = Rcomp.length()-(i*4);
+                        index = (index<0) ? 0 : index;
+                        m += paint.measureText(Rcomp.substring(index, index2));
+                        String h = Integer.toHexString(Integer.parseInt(Rcomp.substring(index, index2),2)).toUpperCase();
+                        m2 += paint.measureText(h);
+                        canvas.drawText(Rcomp.substring(index, index2), an-anMarg-m, rowsize*3 , paint);
+                        canvas.drawText(h, an-anMarg-m2, rowsize*5, paint);
+                    }
+                    paint.setColor(Color.BLACK);
+                    m2 += paint.measureText("0x");
+                    canvas.drawText("0x", an-anMarg-m2, rowsize*5, paint);
+                    totalframes = foto;
+                    return;
+            }
+
+		}
+
+
+
 
 	}
+
+	public int getColor(int i){
+	    i %= 6;
+	    switch (i){
+            case 0:
+                return Color.YELLOW;
+            case 1:
+                return Color.GREEN;
+            case 2:
+                return Color.CYAN;
+            case 3:
+                return Color.RED;
+            case 4:
+                return Color.BLUE;
+            case 5:
+                return Color.MAGENTA;
+        }
+        return Color.BLACK;
+    }
 
 	public void clearDiv(){
 		divisiones = null;
@@ -247,14 +462,16 @@ public class binToHexAnim extends SurfaceView implements
 	public void setRdy(){
 		ready = true;
 		foto = 0;
+		totalframes = 0;
 	}
 
-	public void setResults(String D, String b, String R, String Rh, boolean s){
+	public void setResults(String D, String b, String R, String Rh, boolean s, boolean cs){
 		Decimal = D;
 		bitsFracc = b;
 		finalR = R;
 		finalRHex = Rh;
 		signo = s;
+		consigno = cs;
 	}
 
 	public void setFPS(double f){
@@ -274,7 +491,11 @@ public class binToHexAnim extends SurfaceView implements
 	public void nextFrame(){
 	    if(!ready) return;
 		//int totalPasos = getDivSize()+getMulSize();
-		if(foto==99){
+        if (totalframes == 0){
+            foto++;
+            return;
+        }
+		if(foto==totalframes){
 
 		}
 		else {
