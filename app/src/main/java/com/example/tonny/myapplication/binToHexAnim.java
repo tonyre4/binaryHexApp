@@ -57,6 +57,7 @@ public class binToHexAnim extends SurfaceView implements
 		//Pintar fondo
 		paint.setColor(Color.LTGRAY);
 		canvas.drawPaint(paint);
+        System.out.println("Consigno: " + consigno);
 
 		if (!ready) //Si los datos no estan listos no dibujar nada
 			return;
@@ -234,7 +235,7 @@ public class binToHexAnim extends SurfaceView implements
 
         String Rcomp = Rdiv + Rmul;
         //Dibujar complemento
-		if (consigno){
+		if (true){
 
 		    //Cuando tiene signo negativo
 		    if (signo) {
@@ -313,7 +314,7 @@ public class binToHexAnim extends SurfaceView implements
                         return;
 
                     default:
-                        foto2 -= 2;
+                        foto += 1;
                         break;
                 }
 
@@ -321,51 +322,57 @@ public class binToHexAnim extends SurfaceView implements
 
             switch(foto2){
                 case 1:
-                    paint.setTextSize(fontsize / 2);
-                    canvas.drawText("Agregando signo: ", anMarg, rowsize / 2, paint);
-                    if (Rcomp.length() > 15) {
+                    if(consigno) {
                         paint.setTextSize(fontsize / 2);
-                    } else {
-                        paint.setTextSize(fontsize);
-                    }
-                    float v = paint.measureText("0");
-                    if(signo){
-                        paint.setColor(Color.RED);
-                        canvas.drawText("1", anMarg, (int) (rowsize * 2.5), paint);
-                        paint.setTextSize(fontsize);
-                        canvas.drawText("Negativo", anMarg, (int) (rowsize * 4.5), paint);
-                        //Rcomp = "1" + Rcomp;
+                        canvas.drawText("Agregando signo: ", anMarg, rowsize / 2, paint);
+                        if (Rcomp.length() > 15) {
+                            paint.setTextSize(fontsize / 2);
+                        } else {
+                            paint.setTextSize(fontsize);
+                        }
+                        float v = paint.measureText("0");
+                        if (signo) {
+                            paint.setColor(Color.RED);
+                            canvas.drawText("1", anMarg, (int) (rowsize * 2.5), paint);
+                            paint.setTextSize(fontsize);
+                            canvas.drawText("Negativo", anMarg, (int) (rowsize * 4.5), paint);
+                            //Rcomp = "1" + Rcomp;
+                        } else {
+                            paint.setColor(Color.BLUE);
+                            canvas.drawText("0", anMarg, (int) (rowsize * 2.5), paint);
+                            paint.setTextSize(fontsize);
+                            canvas.drawText("Positivo", anMarg, (int) (rowsize * 4.5), paint);
+                            //Rcomp = "0" + Rcomp;
+                        }
+
+                        if (Rcomp.length() > 15) {
+                            paint.setTextSize(fontsize / 2);
+                        } else {
+                            paint.setTextSize(fontsize);
+                        }
+                        paint.setColor(Color.GREEN);
+                        canvas.drawText(Rcomp.substring(0, Rdiv.length()), anMarg + v, (int) (rowsize * 2.5), paint);
+                        v += paint.measureText(Rcomp.substring(0, Rdiv.length()));
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawText(Rcomp.substring(Rdiv.length(), Rcomp.length()), anMarg + v, (int) (rowsize * 2.5), paint);
+
+                        return;
                     }
                     else{
-                        paint.setColor(Color.BLUE);
-                        canvas.drawText("0", anMarg, (int) (rowsize * 2.5), paint);
-                        paint.setTextSize(fontsize);
-                        canvas.drawText("Positivo", anMarg, (int) (rowsize * 4.5), paint);
-                        //Rcomp = "0" + Rcomp;
+                        foto2 =2;
                     }
-
-                    if (Rcomp.length() > 15) {
-                        paint.setTextSize(fontsize / 2);
-                    } else {
-                        paint.setTextSize(fontsize);
-                    }
-                    paint.setColor(Color.GREEN);
-                    canvas.drawText(Rcomp.substring(0, Rdiv.length()), anMarg+v, (int) (rowsize * 2.5), paint);
-                    v += paint.measureText(Rcomp.substring(0, Rdiv.length()));
-                    paint.setColor(Color.YELLOW);
-                    canvas.drawText(Rcomp.substring(Rdiv.length(), Rcomp.length()), anMarg + v, (int) (rowsize * 2.5), paint);
-
-                    return;
                 case 2:
+
                     paint.setTextSize(fontsize / 2);
                     canvas.drawText("Conversion a hexadecimal: ", anMarg, rowsize / 2, paint);
                     canvas.drawText("Cuartetos de bits: ", anMarg, rowsize*2, paint);
                     canvas.drawText("Número hexadecimal: ", anMarg, rowsize*4, paint);
-                    if(signo){
-                        Rcomp = "1" + Rcomp;
-                    }
-                    else{
-                        Rcomp = "0" + Rcomp;
+                    if(consigno) {
+                        if (signo) {
+                            Rcomp = "1" + Rcomp;
+                        } else {
+                            Rcomp = "0" + Rcomp;
+                        }
                     }
                     if (Rcomp.length() > 15) {
                         paint.setTextSize(fontsize / 2);

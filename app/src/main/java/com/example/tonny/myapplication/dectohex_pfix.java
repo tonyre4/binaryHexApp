@@ -169,6 +169,13 @@ public class dectohex_pfix extends Activity {
         SV1.nextFrame();
     }
 
+    public boolean getConsigno(){
+        if(rbSigned.isChecked()){
+            return true;
+        }
+        else
+            return false;
+    }
 
     public void calcular(){  //LISTENER3
         if (!validar()) //Validando la entrada
@@ -232,9 +239,9 @@ public class dectohex_pfix extends Activity {
         if(rbUnsigned.isChecked()){
             Rbinario.setText(resultComp + "." + resultComppF);
             Rhexa.setText("0x" + Integer.toHexString(Integer.parseInt( resultComp+resultComppF,2)).toUpperCase());
-            SV1.setFPS(30); //Animacion rapida
-            SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, false); //Seteando resultados y entradas
-            SV1.setRdy(); //Activar graficos
+            //SV1.setFPS(30); //Animacion rapida
+            //SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, getConsigno()); //Seteando resultados y entradas
+            //SV1.setRdy(); //Activar graficos
         }
         else {
             if (signo) {
@@ -277,7 +284,7 @@ public class dectohex_pfix extends Activity {
 
         //Configuraciones del thread
         SV1.setFPS(30); //Animacion rapida
-        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, true); //Seteando resultados y entradas
+        SV1.setResults(nDecimal1.getText().toString(), nBitsFracc1.getText().toString(), Rbinario.getText().toString() ,Rhexa.getText().toString(), signo, getConsigno()); //Seteando resultados y entradas
         SV1.setRdy(); //Activar graficos
     }
 
