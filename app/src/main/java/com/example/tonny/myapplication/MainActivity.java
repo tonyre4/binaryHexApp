@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         DecToHex_PFlo_Button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 //se crea un Intent que será lanzado a la clase de Decimal a hexadecimal
-                Intent intent = new Intent(MainActivity.this, voidClass.class);
+                Intent intent = new Intent(MainActivity.this, dectohex_pflo.class);
                 //se abre la interfaz de esta clase
                 startActivityForResult(intent,0);
             }

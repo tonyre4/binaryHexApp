@@ -57,7 +57,7 @@ public class binToHexAnim extends SurfaceView implements
 		//Pintar fondo
 		paint.setColor(Color.LTGRAY);
 		canvas.drawPaint(paint);
-        System.out.println("Consigno: " + consigno);
+        //System.out.println("Consigno: " + consigno);
 
 		if (!ready) //Si los datos no estan listos no dibujar nada
 			return;
@@ -396,7 +396,8 @@ public class binToHexAnim extends SurfaceView implements
                     paint.setColor(Color.BLACK);
                     m2 += paint.measureText("0x");
                     canvas.drawText("0x", an-anMarg-m2, rowsize*5, paint);
-                    totalframes = foto;
+                    if(totalframes<foto)
+                        totalframes = foto;
                     return;
             }
 

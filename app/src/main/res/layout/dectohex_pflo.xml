@@ -3,90 +3,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal">
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Conversion decimal-Binario (Punto flotante)" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingrese un numero decimal. Ingrese la cantidad de bits." />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/numero"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="-0123456789."
-            android:inputType="number"
-            android:hint="Num"/>
+            android:text="Conversion decimal-Binario (Punto flotante)" />
 
-
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_bits"
-            android:entries="@array/bits_array"/>
+            android:text="Ingrese un numero decimal. Ingrese la cantidad de bits." />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <RadioGroup
+                android:id="@+id/bitSel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical">
+                <!--android:gravity="center_vertical|center|center_horizontal"-->
+
+                <RadioButton
+                    android:id="@+id/b32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="32 bits" />
+
+                <RadioButton
+                    android:id="@+id/b64"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="64 bits" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/numeroDecFlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits="-0123456789."
+                android:hint="Número decimal"
+                android:text="-12.70"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resultado:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/result2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/ClearBtn2"
+                android:layout_weight="1"
+                android:onClick="resetOrClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Borrar" />
+
+            <Button
+                android:id="@+id/CalcBtn2"
+                android:layout_weight="1"
+                android:onClick="calc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calcular" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_fijo"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Punto fijo"/>
-        <Button
-            android:id="@+id/btn_flotante"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Punto flotante"/>
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-        <ScrollView
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <Button
+                android:id="@+id/backBtn2"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="backFrame"
+                android:text="&lt;&lt;"/>
+            <Button
+                android:id="@+id/nextBtn2"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="nextFrame"
+                android:text="&gt;&gt;"/>
+            <Button
+                android:id="@+id/playBtn2"
+                android:onClick="playAnimation"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&gt;"/>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=" "/>
-                </LinearLayout>
-            </HorizontalScrollView>
-        </ScrollView>
+        <com.example.tonny.myapplication.binToHexAnimflo
+            android:id="@+id/lienzo2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
+
+
 </LinearLayout>
